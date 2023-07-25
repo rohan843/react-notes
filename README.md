@@ -29,6 +29,8 @@
 
 2. React servers are programmed by default to _always_ return the `index.html` file irrespective of what path was specified in the URL.
 
+3. When modifying objects in javascript, *always* create new deep copies. The `map` function and object destructuring can be useful.
+
 ### Theory of Browser Navigation
 
 1. When a user clicks on an `<a>` (anchor) tag, the browser makes a request to the resource specified by the `href` attribute.
