@@ -17,6 +17,7 @@
         - [`Link` Component](#link-component)
         - [`Route` Component](#route-component)
       - [Portals](#portals)
+  - [Fragments](#fragments)
 
 <!-- TODO: Add notes from section 1 to section 12 -->
 
@@ -289,9 +290,35 @@ function Modal() {
       <div className="absolute inset-0 bg-gray-300 opacity-80"></div>
       <div className="absolute inset-40 p-10 bg-white">This is a modal.</div>
     </div>,
-    document.querySelector(".modal-container")   // A reference to where to insert the above JSX
+    document.querySelector(".modal-container") // A reference to where to insert the above JSX
   );
 }
 
 export default Modal;
+```
+
+## Fragments
+
+Oftentimes, we have React components that return such JSX that is not in our control, and this JSX cannot be wrapped into any HTML element either. In case any attribute needed by react, such as `key` is to be placed in the top level element of this JSX, it cannot be done by simple HTML elements.
+In such situations, dummy components such as `Echo` as below may come in handy:
+
+```js
+function Echo({ children }) {
+  return children;
+}
+```
+
+We can use this simply as:
+
+```js
+<Echo key={"some key"}>{/*Un - editable JSX here*/}</Echo>
+```
+
+React provides a simple component to perform just this, called `Fragment`.
+We can simply do:
+
+```js
+import { Fragment } from "react";
+
+<Fragment key={"some key"}>{/*Un - editable JSX here*/}</Fragment>;
 ```
