@@ -31,6 +31,8 @@
 
 3. When modifying objects in javascript, *always* create new deep copies. The `map` function and object destructuring can be useful.
 
+4. *NEVER* directly modify an array or an object (or their elements) if they are a part of the prop system or the state system (part of prop system === being passed as a prop at least once). Make a deep copy instead.
+
 ### Theory of Browser Navigation
 
 1. When a user clicks on an `<a>` (anchor) tag, the browser makes a request to the resource specified by the `href` attribute.
