@@ -1,10 +1,6 @@
 import { useState } from "react";
 import Table from "./Table";
-import {
-  GoListUnordered,
-  GoArrowSmallDown,
-  GoArrowSmallUp,
-} from "react-icons/go";
+import { GoArrowSmallDown, GoArrowSmallUp } from "react-icons/go";
 
 function SortableTable(props) {
   const { config, data } = props;
@@ -34,7 +30,10 @@ function SortableTable(props) {
     return {
       ...column,
       header: () => (
-        <th className="cursor-pointer hover:bg-gray-200" onClick={() => handleClick(column.label)}>
+        <th
+          className="cursor-pointer hover:bg-gray-200"
+          onClick={() => handleClick(column.label)}
+        >
           <div className="flex items-center">
             {getIcons(column.label, sortBy, sortOrder)}
             {column.label}
