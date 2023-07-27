@@ -23,6 +23,7 @@
     - [Basic Usage](#basic-usage)
     - [Immer](#immer)
     - [Summary](#summary)
+  - [Redux](#redux)
 
 <!-- TODO: Add notes from section 1 to section 12 -->
 
@@ -491,3 +492,6 @@ This makes the code noticeably more modular. From the docs,
 > `useReducer` is usually preferable to `useState` when you have complex state logic that involves multiple sub-values. It also lets you optimize performance for components that trigger deep updates because you can pass `dispatch` down instead of callbacks.
 
 Also, this allows for a very specific set of allowed state changes.
+
+
+## Redux
