@@ -340,3 +340,15 @@ The basic overall process is as simple as:
 2. Copy paste it all into a helper function.
 3. Fix all the broken references.
 4. Use this helper as a hook.
+
+A more detailed and fool-proof method is:
+
+1. Make a function `useSomething`.
+2. Find all the non-JSX expressions that refer to 1-2 related pieces of state.
+3. Cut them and paste them into the `useSomething` function.
+4. Find `not defined` errors in the component.
+5. From the hook, return an object that contains the variables that the component needs.
+6. In the component, call the hook. Destructure the properties the component needs.
+7. Find `not defined` errors in the hook. Pass the missing variables in as arguments to the hook.
+8. Rename the hook to something more meaningful.
+9. Rename the returned properties to something more descriptive.
