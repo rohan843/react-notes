@@ -2,23 +2,23 @@ import { useEffect } from "react";
 import { useState } from "react";
 import Button from "../components/Button";
 
-function useSomething(initialCount) {
+function useCounter(initialCount) {
   const [count, setCount] = useState(initialCount);
   useEffect(() => {
     console.log(count);
   }, [count]);
-  const handleClick = () => {
+  const increment = () => {
     setCount(count + 1);
   };
-  return { count, handleClick };
+  return { count, increment };
 }
 
 function CounterPage({ initialCount }) {
-  const { count, handleClick } = useSomething(initialCount);
+  const { count, increment } = useCounter(initialCount);
   return (
     <div>
       <h1>{count}</h1>
-      <Button primary onClick={handleClick}>
+      <Button primary onClick={increment}>
         Increment Count
       </Button>
     </div>
