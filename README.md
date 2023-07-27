@@ -352,3 +352,4 @@ A more detailed and fool-proof method is:
 7. Find `not defined` errors in the hook. Pass the missing variables in as arguments to the hook.
 8. Rename the hook to something more meaningful.
 9. Rename the returned properties to something more descriptive.
+10. Extract the hook into a module of its own.
