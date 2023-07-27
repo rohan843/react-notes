@@ -458,3 +458,5 @@ dispatch({
 This makes the code noticeably more modular. From the docs,
 
 > `useReducer` is usually preferable to `useState` when you have complex state logic that involves multiple sub-values. It also lets you optimize performance for components that trigger deep updates because you can pass `dispatch` down instead of callbacks.
+
+Also, this allows for a very specific set of allowed state changes.
