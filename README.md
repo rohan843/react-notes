@@ -434,6 +434,19 @@ const reducer = (state, action) => {
 };
 ```
 
+The `action` objects passed into the `reducer` need to be able to describe every action that takes place. For this, a generally accepted convention is:
+
+1. When we need to modify the state, we'll call the `dispatch` function, and _always_ pass the `action` object.
+2. The `action` object will have a `type` property that will be a string. This helps tell the reducer what state update it needs to make.
+3. If we need to communicate some data to the reducer, it will be placed in the `payload` property of the `action` object.
+
+```js
+dispatch({
+  type: "update-val2",
+  payload: "newValue",
+});
+```
+
 This makes the code noticeably more modular. From the docs,
 
 > `useReducer` is usually preferable to `useState` when you have complex state logic that involves multiple sub-values. It also lets you optimize performance for components that trigger deep updates because you can pass `dispatch` down instead of callbacks.
