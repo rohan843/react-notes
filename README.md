@@ -21,6 +21,7 @@
   - [Custom Hooks creation: Logic reuse](#custom-hooks-creation-logic-reuse)
   - [Reducers](#reducers)
     - [Basic Usage](#basic-usage)
+    - [Immer](#immer)
     - [Summary](#summary)
 
 <!-- TODO: Add notes from section 1 to section 12 -->
@@ -451,7 +452,26 @@ dispatch({
 });
 ```
 
+### Immer
 
+This is an external library that allows us to mutate the state object directly in the `reducer` function. It can be installed as:
+
+```bash
+npm i immer
+```
+
+The following changes supersede the rules of `reducer` function as described above:
+
+1. We can directly modify the `state` object.
+2. We donot have to return a new value.
+
+```js
+// Sample reducer WITH Immer library.
+const reducer = (state, action) => {
+  state.val1 += 1;
+  return;
+};
+```
 
 ### Summary
 
