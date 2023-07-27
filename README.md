@@ -473,6 +473,17 @@ const reducer = (state, action) => {
 };
 ```
 
+To enable these changes, we use `immer` in the following way, via the `produce` function:
+
+```js
+import { produce } from "immer";
+
+const [state, dispatch] = useReducer(produce(reducer), {
+  val1: 0,
+  val2: "initialValue",
+});
+```
+
 ### Summary
 
 This makes the code noticeably more modular. From the docs,
