@@ -19,6 +19,7 @@
       - [Portals](#portals)
   - [Fragments](#fragments)
   - [Custom Hooks creation: Logic reuse](#custom-hooks-creation-logic-reuse)
+  - [Reducers](#reducers)
 
 <!-- TODO: Add notes from section 1 to section 12 -->
 
@@ -353,3 +354,7 @@ A more detailed and fool-proof method is:
 8. Rename the hook to something more meaningful.
 9. Rename the returned properties to something more descriptive.
 10. Extract the hook into a module of its own.
+
+## Reducers
+
+Reducers are created via the `useReducer` hook. They provide a slightly different way of handling state in a component.
