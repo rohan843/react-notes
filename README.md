@@ -20,6 +20,8 @@
   - [Fragments](#fragments)
   - [Custom Hooks creation: Logic reuse](#custom-hooks-creation-logic-reuse)
   - [Reducers](#reducers)
+    - [Basic Usage](#basic-usage)
+    - [Summary](#summary)
 
 <!-- TODO: Add notes from section 1 to section 12 -->
 
@@ -361,6 +363,8 @@ Reducers are created via the `useReducer` hook. They provide a slightly differen
 
 `useReducer` is useful when we have several closely related pieces of state, and when future state value depends on the current state.
 
+### Basic Usage
+
 The basic usage is:
 
 ```js
@@ -437,8 +441,8 @@ const reducer = (state, action) => {
 The `action` objects passed into the `reducer` need to be able to describe every action that takes place. For this, a generally accepted convention is:
 
 1. When we need to modify the state, we'll call the `dispatch` function, and _always_ pass the `action` object.
-2. The `action` object will have a `type` property that will be a string. This helps tell the reducer what state update it needs to make.
-3. If we need to communicate some data to the reducer, it will be placed in the `payload` property of the `action` object.
+2. The `action` object will have a `type` property that will be a string/enum/constant (all caps). This helps tell the reducer what state update it needs to make.
+3. If we need to communicate some data to the reducer, it will be placed in the `payload` property of the `action` object. Try to keep this property _only if_ absolutely necessary. If the data to be communicated is a function of the `state` itself, don't put the computation in `payload`, rather do it in `reducer`.
 
 ```js
 dispatch({
@@ -446,6 +450,10 @@ dispatch({
   payload: "newValue",
 });
 ```
+
+
+
+### Summary
 
 This makes the code noticeably more modular. From the docs,
 

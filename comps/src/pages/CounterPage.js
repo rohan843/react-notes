@@ -1,34 +1,78 @@
-import { useState } from "react";
+import { useReducer } from "react";
 import Button from "../components/Button";
 import Panel from "../components/Panel";
 
+const INCREMENT = "increment";
+const DECREMENT = "decrement";
+const UPDATE_VALUE = "update-value";
+const UPDATE_COUNT_WITH_VALUE = "update-count";
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case INCREMENT:
+      return {
+        ...state,
+        count: state.count + 1,
+      };
+    case DECREMENT:
+      return {
+        ...state,
+        count: state.count - 1,
+      };
+    case UPDATE_COUNT_WITH_VALUE:
+      return {
+        ...state,
+        count: state.count + state.valueToAdd,
+        valueToAdd: 0,
+      };
+    case UPDATE_VALUE:
+      return {
+        ...state,
+        valueToAdd: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+
 function CounterPage({ initialCount }) {
-  const [count, setCount] = useState(initialCount);
-  const [valueToAdd, setValueToAdd] = useState(0);
+  // const [count, setCount] = useState(initialCount);
+  // const [valueToAdd, setValueToAdd] = useState(0);
+  const [state, dispatch] = useReducer(reducer, {
+    count: initialCount,
+    valueToAdd: 0,
+  });
 
   const increment = () => {
-    setCount(count + 1);
+    dispatch({
+      type: INCREMENT,
+    });
   };
 
   const decrement = () => {
-    setCount(count - 1);
+    dispatch({
+      type: DECREMENT,
+    });
   };
 
   const handleChange = (e) => {
     const value = parseInt(e.target.value) || 0;
-    console.log(value);
-    setValueToAdd(value);
+    dispatch({
+      type: UPDATE_VALUE,
+      payload: value,
+    });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setCount(count + valueToAdd);
-    setValueToAdd(0);
+    dispatch({
+      type: UPDATE_COUNT_WITH_VALUE,
+    });
   };
 
   return (
     <Panel className="m-3">
-      <h1 className="text-lg">{count}</h1>
+      <h1 className="text-lg">{state.count}</h1>
       <div className="flex flex-row">
         <Button outline onClick={increment}>
           Increment
@@ -42,7 +86,7 @@ function CounterPage({ initialCount }) {
         <input
           type="number"
           className="p-1 m-3 bg-gray-50 border border-gray-300"
-          value={valueToAdd || ""}
+          value={state.valueToAdd || ""}
           onChange={handleChange}
         />
         <Button outline>Add it!</Button>
