@@ -401,6 +401,39 @@ dispatch();
 
 This will simply mean `action` in `reducer` will be `null`.
 
+There are a few rules for the `reducer` function:
+
+1. Whatever is returned will be the new state.
+2. If nothing is returned, the state will be `undefined`.
+3. No `async/await`, no `requests`, no `promises` and no outside variables are allowed. (For outside variables, it is more of a good practice to not be used inside, rather than an actual rule.)
+4. Like almost everywhere else in React, the `state` object should NOT be modified directly.
+
+```js
+// Bad way
+const reducer = (state, action) => {
+  state.val1 = state.val1 + 1;
+  return state;
+};
+
+// Good way
+const reducer = (state, action) => {
+  // Update value of val1.
+  return {
+    ...state,
+    val1: state.val1 + 1,
+  };
+};
+
+// Good way
+const reducer = (state, action) => {
+  // Reset the state.
+  return {
+    val1: 0,
+    val2: "initialValue",
+  };
+};
+```
+
 This makes the code noticeably more modular. From the docs,
 
 > `useReducer` is usually preferable to `useState` when you have complex state logic that involves multiple sub-values. It also lets you optimize performance for components that trigger deep updates because you can pass `dispatch` down instead of callbacks.
