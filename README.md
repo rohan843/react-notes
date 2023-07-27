@@ -18,6 +18,7 @@
         - [`Route` Component](#route-component)
       - [Portals](#portals)
   - [Fragments](#fragments)
+  - [Custom Hooks creation: Logic reuse](#custom-hooks-creation-logic-reuse)
 
 <!-- TODO: Add notes from section 1 to section 12 -->
 
@@ -328,3 +329,14 @@ import { Fragment } from "react";
 
 <Fragment key={"some key"}>{/*Un - editable JSX here*/}</Fragment>;
 ```
+
+## Custom Hooks creation: Logic reuse
+
+If some piece of logic needs to be used at multiple places in a project, we can extract it into a custom hook.
+
+The basic overall process is as simple as:
+
+1. Find code in a component related to a single piece of state.
+2. Copy paste it all into a helper function.
+3. Fix all the broken references.
+4. Use this helper as a hook.
