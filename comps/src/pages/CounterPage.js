@@ -29,8 +29,6 @@ const reducer = (state, action) => {
 };
 
 function CounterPage({ initialCount }) {
-  // const [count, setCount] = useState(initialCount);
-  // const [valueToAdd, setValueToAdd] = useState(0);
   const [state, dispatch] = useReducer(produce(reducer), {
     count: initialCount,
     valueToAdd: 0,
