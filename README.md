@@ -31,9 +31,9 @@
 
 2. React servers are programmed by default to _always_ return the `index.html` file irrespective of what path was specified in the URL.
 
-3. When modifying objects in javascript, *always* create new deep copies. The `map` function and object destructuring can be useful.
+3. When modifying objects in javascript, _always_ create new deep copies. The `map` function and object destructuring can be useful.
 
-4. *NEVER* directly modify an array or an object (or their elements) if they are a part of the prop system or the state system (part of prop system === being passed as a prop at least once). Make a deep copy instead: `{...prevObj}` or `[...prevArray]`.
+4. _NEVER_ directly modify an array or an object (or their elements) if they are a part of the prop system or the state system (part of prop system === being passed as a prop at least once). Make a deep copy instead: `{...prevObj}` or `[...prevArray]`.
 
 5. As a good design pattern, its always recommended to first create a react component, then extract its logic into a custom hook, if needed.
 
@@ -357,4 +357,50 @@ A more detailed and fool-proof method is:
 
 ## Reducers
 
-Reducers are created via the `useReducer` hook. They provide a slightly different way of handling state in a component.
+Reducers are created via the `useReducer` hook. They provide a slightly different way of handling state in a component as compared to `useState`. Usually, only 1 of them is used within a component.
+
+`useReducer` is useful when we have several closely related pieces of state, and when future state value depends on the current state.
+
+The basic usage is:
+
+```js
+const [state, dispatch] = useReducer(reducer, {
+  val1: 0,
+  val2: "initialValue",
+});
+```
+
+Here,
+
+- `state`: State variable
+- `dispatch`: Function to change state
+- `reducer`: Another function, described below
+- `{...passed object...}`: Initial value for the `state` variable
+
+The `reducer` function takes 2 parameters, and has the following signature:
+
+```js
+const reducer = (state, action) => {
+  return ...;
+};
+```
+
+This function will be called whenever we call the `dispatch` function. Say we execute the below instruction:
+
+```js
+dispatch(action);
+```
+
+This will call the reducer function. The value of the `state` parameter (i.e., the first parameter) will be the state object itself, and the value of `action` parameter (i.e., the second parameter) will be whatever is passed into `dispatch`.
+The return value of the reducer function will be the new value for `state`.
+Note that `dispatch` may also be called with no arguments:
+
+```js
+dispatch();
+```
+
+This will simply mean `action` in `reducer` will be `null`.
+
+This makes the code noticeably more modular. From the docs,
+
+> `useReducer` is usually preferable to `useState` when you have complex state logic that involves multiple sub-values. It also lets you optimize performance for components that trigger deep updates because you can pass `dispatch` down instead of callbacks.
