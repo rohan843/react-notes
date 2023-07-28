@@ -27,8 +27,11 @@
     - [Redux Store](#redux-store)
       - [Slices](#slices)
         - [Action Creators](#action-creators)
+    - [Action Flow](#action-flow)
     - [Connecting React to Redux](#connecting-react-to-redux)
       - [State Operations](#state-operations)
+      - [Updating multiple slices as a Single Task](#updating-multiple-slices-as-a-single-task)
+      - [Recommended Folder Structures](#recommended-folder-structures)
 
 <!-- TODO: Add notes from section 1 to section 12 -->
 
@@ -490,6 +493,26 @@ const [state, dispatch] = useReducer(produce(reducer), {
 });
 ```
 
+> Note: In Immer, we are _supposed_ to mutate the state or return a value. So, assigning the `state` parameter to a new value **would not work**. All changes need to be in-place or returned.
+>
+> e.g.,
+>
+> ```js
+> const reducer = (state, action) => {
+>   ...
+>   state = [];
+> }
+> ```
+>
+> This is wrong, but the following is correct:
+>
+> ```js
+> const reducer = (state, action) => {
+>   ...
+>   return [];
+> }
+> ```
+
 ### Summary
 
 This makes the code noticeably more modular. From the docs,
@@ -624,6 +647,71 @@ We can use them to get the action objects, that we can immediately dispatch:
 
 ```js
 store.dispatch(songsSlice.actions.addSong("new song"));
+
+// The action type itself can be obtained as:
+songsSlice.actions.addSong.toString();
+// Or, simply as:   (this won't return a string, but is often used as a shorthand when the action type needs to be passed into some Redux functionality)
+songsSlice.actions.addSong;
+```
+
+We can create custom action creators as:
+
+```js
+import { createAction } from "@reduxjs/toolkit";
+
+// Creating a custom action type.
+const reset = createAction("app/reset");
+
+// Now, reset is a usual action creator:
+console.log(reset("asdf"));
+// The output is as:
+//     {
+//       type: "app/reset",
+//       payload: "asdf",
+//     }
+```
+
+### Action Flow
+
+So far, we have seen that for each slice, multiple mini reducers get combined into a single reducer. There are multiple such reducers within the store, one for each slice.
+
+When an action is dispatched to the store, its type gets checked against the type requirements of each slice's reducer, then further to a corresponding mini-reducer. Basically, the action is sent to _every_ reducer in the store.
+
+The standard template for such a matching is: `slice_name/mini_reducer_name`.
+
+This is the default behaviour, but we can extend it to allow for mini reducers of a slice to be called, even if the dispatched action's type doesn't match the above template.
+
+To do this, we use the `extraReducers` property while creating a slice:
+
+```js
+import { createAction } from "@reduxjs/toolkit";
+
+// Creating a custom action type.
+const reset = createAction("app/reset");
+
+const songsSlice = createSlice({
+  name: "song",
+  initialState: [],
+  reducers: {
+    addSong(state, action) {
+      state.push(action.payload);
+    },
+    removeSong(state, action) {
+      // action.payload === string, the song we want to remove.
+      const idx = state.indexOf(action.payload);
+      state.splice(idx, 1);
+    },
+  },
+  // We can add extra reducers here.
+  extraReducers(builder) {
+    // The below mini-reducer essentially clears the state back to its initial value, with no songs, whenever a (custom created) reset action is called.
+    // We used the action type from the action creator, instead of hardcoding it to prevent any duplication and typos.
+    builder.addCase(reset, (state, action) => {
+      // reset the state to initial value (empty it)
+      return [];
+    });
+  },
+});
 ```
 
 ### Connecting React to Redux
@@ -725,3 +813,54 @@ function AComponent() {
 
 export default SongPlaylist;
 ```
+
+#### Updating multiple slices as a Single Task
+
+This section is for situations where multiple slices need to be updated in a similar way. Say there are 2 slices, `movies` and `songs`, and we need to reset both of them to their original state.
+
+We could use 2 separate dispatches, each calling the action creator of the respective slice's reset reducer:
+
+```js
+dispatch(resetMovies());
+dispatch(resetSongs());
+```
+
+This however, requires that we perform 2 separate dispatches in out code. In Redux, our goal in general is to keep the number of dispatched to a minimum.
+
+We can instead create a custom action type and add extra reducers as:
+
+```js
+import { createSlice, createAction } from "@reduxjs/toolkit";
+
+const reset = createAction("app/reset");
+
+const songsSlice = createSlice({
+  ...,
+  extraReducers(builder) {
+    builder.addCase(reset, () => {
+      return [];
+    });
+  },
+});
+
+const moviesSlice = createSlice({
+  ...,
+  extraReducers(builder) {
+    builder.addCase(reset, () => {
+      return [];
+    });
+  },
+});
+```
+
+#### Recommended Folder Structures
+
+The above examples were not taking into account the separation of slices into different files.
+
+One possible way of structuring a react project is:
+
+`src/components`: \[FOLDER\] contains all components of our project.
+`src/store/actions`: \[FOLDER\] contains all custom action creators.
+`src/store/slices`: \[FOLDER\] contains all slices.
+`src/store/index.js`: \[FILE\] the redux store is created and exported here.
+
