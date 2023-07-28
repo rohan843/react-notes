@@ -27,6 +27,7 @@
     - [Redux Store](#redux-store)
       - [Slices](#slices)
         - [Action Creators](#action-creators)
+    - [Connecting React to Redux](#connecting-react-to-redux)
 
 <!-- TODO: Add notes from section 1 to section 12 -->
 
@@ -623,4 +624,17 @@ We can use them to get the action objects, that we can immediately dispatch:
 ```js
 store.dispatch(songsSlice.actions.addSong("new song"));
 ```
+
+### Connecting React to Redux
+
+To use Redux from within React, we could import the slices in our JS files, but it is not the recommended way. We use React-Redux instead.
+
+React-Redux provides a `provider`. This allows us to place in the context system the store. Then, the components can access the store through the context system.
+
+These steps need to be followed once per project to integrate React and Redux:
+
+1. Export the `store` from whatever file it is created in.
+2. Import `store` into the root `index.js` file.
+3. Import `Provider` from the react-redux library.
+4. Wrap the `App` component with the provider, and pass store to the provider.
 
