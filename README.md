@@ -24,6 +24,8 @@
     - [Immer](#immer)
     - [Summary](#summary)
   - [Redux](#redux)
+    - [Redux Store](#redux-store)
+      - [Slices](#slices)
 
 <!-- TODO: Add notes from section 1 to section 12 -->
 
@@ -506,3 +508,83 @@ Another difference between React and Redux is that in Redux we may have several 
 > This pattern of `dispatch -> reducer -> state` both in `useReducer` and in Redux is very popular. This is mainly because the `dispatch` function allows for a central point of any state change initiation. However, this comes at a cost of having too much code to specify what part of the state needs to be changed.
 
 The recommended way to develop Redux projects is to use the Redux Toolkit (RTK) as a wrapper around Redux. It makes the usage very easy.
+
+### Redux Store
+
+It is an object that holds all of our state. Barring extremely large projects, all Redux projects generally have only 1 store.
+
+We usually donot have to interact with the store directly. The React-Redux library handles the store for us. However, if we ever need to manage the store manually for debugging purposes, we do it in the following way:
+
+```js
+// To dispatch an action.
+store.dispatch({ type: "songs/addSong" });
+
+// To see the state existing in the store.
+store.getState();
+```
+
+The general setup of the store is:
+
+```js
+// In the file: "src/store/index.js". This file should be imported into the "src/index.js" file as:
+//      import './store'
+import { configureStore, createSlice } from "@reduxjs/toolkit";
+
+// This is one slice, i.e., one property within the store.
+const songsSlice = createSlice({
+  // The name will be used to identify the slice.
+  name: "song",
+
+  // This is the initial state of the slice, here an array. It is referenced by `state` within the reducer.
+  initialState: [],
+
+  // These are 2 reducers within the slice. Their names are used to specify the action. The slice will eventually combine all these together into a single reducer function.
+  reducers: {
+    // Action type: 'song' + '/' + 'addSong' = 'song/addSong'.
+    addSong(state, action) {
+      // Note that the state itself can be mutated here. The Immer library is used internally.
+      state.push(action.payload);
+    },
+    // Action type: 'song' + '/' + 'removeSong' = 'song/removeSong'.
+    removeSong(state, action) {
+      //
+    },
+  },
+});
+
+// This is the definition of the state itself. The reducer property allows us to add the various slices to the state, and to specify their state.
+const store = configureStore({
+  reducer: {
+    songs: songsSlice.reducer,
+  },
+});
+
+// Usage of the dispatch method:
+store.dispatch({
+  type: "song/addSong",
+  payload: "New Song",
+});
+
+// Usage of the getState method:   (The complete state object is returned)
+const finalState = store.getState();
+console.log(finalState);
+// The received output is such an object:
+//    {
+//      "songs":["New Song"],
+//    }
+```
+
+The keys for the store's state object are set when the store is created. The values are provided by the individual reducers. 
+
+> Its usually nice to store all the state in a single big object.
+
+#### Slices
+
+Slices automatically create reducers and action types for us. (They don't actually affect the underlying `dispatch -> reducer -> state` flow).
+
+Their 3 main roles are:
+
+1. Defining some initial state.
+2. Combining 'mini-reducers' into a big reducer.
+3. Creating a set of 'action creator' functions, i.e., creating the action types.
+
