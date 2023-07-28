@@ -535,6 +535,8 @@ Another difference between React and Redux is that in Redux we may have several 
 
 The recommended way to develop Redux projects is to use the Redux Toolkit (RTK) as a wrapper around Redux. It makes the usage very easy.
 
+> A dummy project is available here: [https://codesandbox.io/s/rtk-forked-q2yhyk](https://codesandbox.io/s/rtk-forked-q2yhyk)
+
 ### Redux Store
 
 It is an object that holds all of our state. Barring extremely large projects, all Redux projects generally have only 1 store.
