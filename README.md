@@ -498,3 +498,11 @@ Also, this allows for a very specific set of allowed state changes.
 It is a library for managing state, using the same techniques as `useReducer`.
 
 Within React, we create a component with some state, and then this state object can be passed onto its child components. With Redux however, we create a separate object, called the **Redux Store**. This is responsible for creating and maintaining our state. Individual components can connect to it and access the state.
+
+Redux doesn't require the use of React. To allow for an easy interfacing with Redux from React, we use a library called `react-redux`. This helps in communicating between the React (components) and Redux (Redux store) sides of out project.
+
+Another difference between React and Redux is that in Redux we may have several different reducer functions to manage each property within our state object.
+
+> This pattern of `dispatch -> reducer -> state` both in `useReducer` and in Redux is very popular. This is mainly because the `dispatch` function allows for a central point of any state change initiation. However, this comes at a cost of having too much code to specify what part of the state needs to be changed.
+
+The recommended way to develop Redux projects is to use the Redux Toolkit (RTK) as a wrapper around Redux. It makes the usage very easy.
