@@ -670,4 +670,58 @@ The steps to **access the state** are:
 3. Call the hook, passing in a selector function.
 4. Use the state. Anytime the state changes, the component will re-render.
 
+```js
+// Store index.js file
+import { configureStore, createSlice } from "@reduxjs/toolkit";
 
+const songsSlice = createSlice({
+  name: "song",
+  initialState: [],
+  reducers: {
+    addSong(state, action) {
+      state.push(action.payload);
+    },
+    removeSong(state, action) {
+      // action.payload === string, the song we want to remove.
+      const idx = state.indexOf(action.payload);
+      state.splice(idx, 1);
+    },
+  },
+});
+
+const store = configureStore({
+  reducer: {
+    songs: songsSlice.reducer,
+  },
+});
+
+export { store };
+export const { addSong, removeSong } = songsSlice.actions;
+```
+
+```js
+// A component
+import { createRandomSong } from "../data";
+import { useDispatch, useSelector } from "react-redux";
+import { addSong, removeSong } from "../store";
+
+function AComponent() {
+  const dispatch = useDispatch();
+
+  // Fetch the songs array (the state)
+  const songPlaylist = useSelector((state) => {
+    // This is the selector function.
+    return state.songs;
+  });
+
+  // Add a song.
+  dispatch(addSong(song));
+
+  // Remove a song.
+  dispatch(removeSong(song));
+
+  return /*JSX*/;
+}
+
+export default SongPlaylist;
+```
