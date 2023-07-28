@@ -860,7 +860,13 @@ The above examples were not taking into account the separation of slices into di
 One possible way of structuring a react project is:
 
 `src/components`: \[FOLDER\] contains all components of our project.
-`src/store/actions`: \[FOLDER\] contains all custom action creators.
+`src/store/actions.js`: \[FILE\] contains all custom action creators.
 `src/store/slices`: \[FOLDER\] contains all slices.
-`src/store/index.js`: \[FILE\] the redux store is created and exported here.
+`src/store/index.js`: \[FILE\] the redux store is created and exported here. Also, all slices' reducers and action creators are imported here and action creators are exported as well. Now, all files can simply say:
+
+```js
+import { xyzActionCreator } from "../store";
+```
+
+The idea is to setup the `src/store/index.js` file as a central access point into Redux store and related objects.
 
