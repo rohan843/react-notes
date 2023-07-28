@@ -26,6 +26,7 @@
   - [Redux](#redux)
     - [Redux Store](#redux-store)
       - [Slices](#slices)
+        - [Action Creators](#action-creators)
 
 <!-- TODO: Add notes from section 1 to section 12 -->
 
@@ -535,7 +536,7 @@ const songsSlice = createSlice({
   // The name will be used to identify the slice.
   name: "song",
 
-  // This is the initial state of the slice, here an array. It is referenced by `state` within the reducer.
+  // This is the initial state of the slice, here an array. It is referenced by `state` within the reducer. (this is different from the full state object associated with the store itself. This is just a part of the store's state that is managed by these mini-reducers.)
   initialState: [],
 
   // These are 2 reducers within the slice. Their names are used to specify the action. The slice will eventually combine all these together into a single reducer function.
@@ -574,7 +575,7 @@ console.log(finalState);
 //    }
 ```
 
-The keys for the store's state object are set when the store is created. The values are provided by the individual reducers. 
+The keys for the store's state object are set when the store is created. The values are provided by the individual reducers.
 
 > Its usually nice to store all the state in a single big object.
 
@@ -586,5 +587,40 @@ Their 3 main roles are:
 
 1. Defining some initial state.
 2. Combining 'mini-reducers' into a big reducer.
-3. Creating a set of 'action creator' functions, i.e., creating the action types.
+3. Creating a set of 'action creator' functions, for automatically creating the action types.
+
+##### Action Creators
+
+An important aspect of slices are action creators. They are simply convenience functions that create the action object with the necessary payload, so that we don't have to write it ourselves.
+
+They can be accessed as:
+
+```js
+songsSlice.actions;
+```
+
+And they look like:
+
+```js
+{
+  addSong(payload) {
+    return {
+      type: 'song/addSong',
+      payload: payload
+    };
+  },
+  removeSong(payload) {
+    return {
+      type: 'song/removeSong',
+      payload: payload
+    };
+  }
+}
+```
+
+We can use them to get the action objects, that we can immediately dispatch:
+
+```js
+store.dispatch(songsSlice.actions.addSong("new song"));
+```
 
