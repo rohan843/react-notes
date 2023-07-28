@@ -493,5 +493,8 @@ This makes the code noticeably more modular. From the docs,
 
 Also, this allows for a very specific set of allowed state changes.
 
-
 ## Redux
+
+It is a library for managing state, using the same techniques as `useReducer`.
+
+Within React, we create a component with some state, and then this state object can be passed onto its child components. With Redux however, we create a separate object, called the **Redux Store**. This is responsible for creating and maintaining our state. Individual components can connect to it and access the state.
