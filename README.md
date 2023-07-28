@@ -28,6 +28,7 @@
       - [Slices](#slices)
         - [Action Creators](#action-creators)
     - [Connecting React to Redux](#connecting-react-to-redux)
+      - [State Operations](#state-operations)
 
 <!-- TODO: Add notes from section 1 to section 12 -->
 
@@ -637,4 +638,36 @@ These steps need to be followed once per project to integrate React and Redux:
 2. Import `store` into the root `index.js` file.
 3. Import `Provider` from the react-redux library.
 4. Wrap the `App` component with the provider, and pass store to the provider.
+
+```js
+import { store } from "./store";
+import { Provider } from "react-redux";
+
+// Usual react boilerplate.
+
+root.render(
+  <Provider store={store}>
+    <App />
+  </Provider>
+);
+```
+
+#### State Operations
+
+The steps to **update the state** are:
+
+1. Add a reducer to one of the slices that actually changes the state in some way.
+2. Export the action creator that the slice automatically creates.
+3. Find the component from where we want to dispatch.
+4. Import the action creator function and `useDispatch` from `react-redux`.
+5. Call the `useDispatch` hook to get access to the store's dispatch function.
+6. When the user does something, call the action creator to get an action, and then dispatch it.
+
+The steps to **access the state** are:
+
+1. Find the component that needs to access some state.
+2. Import the `useSelector` hook from `react-redux`.
+3. Call the hook, passing in a selector function.
+4. Use the state. Anytime the state changes, the component will re-render.
+
 
