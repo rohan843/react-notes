@@ -720,6 +720,10 @@ const songsSlice = createSlice({
 
 To use Redux from within React, we could import the slices in our JS files, but it is not the recommended way. We use React-Redux instead.
 
+```bash
+npm i @reduxjs/toolkit react-redux
+```
+
 React-Redux provides a `provider`. This allows us to place in the context system the store. Then, the components can access the store through the context system.
 
 These steps need to be followed once per project to integrate React and Redux:
@@ -871,4 +875,3 @@ import { xyzActionCreator } from "../store";
 ```
 
 The idea is to setup the `src/store/index.js` file as a central access point into Redux store and related objects.
-
