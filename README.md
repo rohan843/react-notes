@@ -32,6 +32,7 @@
       - [State Operations](#state-operations)
       - [Updating multiple slices as a Single Task](#updating-multiple-slices-as-a-single-task)
       - [Recommended Folder Structures](#recommended-folder-structures)
+    - [Redux Store Design](#redux-store-design)
 
 <!-- TODO: Add notes from section 1 to section 12 -->
 
@@ -875,3 +876,17 @@ import { xyzActionCreator } from "../store";
 ```
 
 The idea is to setup the `src/store/index.js` file as a central access point into Redux store and related objects.
+
+### Redux Store Design
+
+The general flow to design the store within RTK is:
+
+1. Identify what state exists in the app.
+2. Identify how that state changes over time (describe each allowed change with a very short phrase). These will eventually lead to the mini-reducers.
+3. Group together common pieces of state.
+   1. For this, list out the major processes happening on the screen, one per group.
+   2. Associate each state with the process it seems to fall under.
+4. Create a slice for each group, using the associated mini-reducers from step 2.
+
+> **Derived State**: These are the values that seem to change on the screen, but can be calculated using the existing state. Calculating them within our components instead of storing them in the store makes out code more efficient and less prone to bugs.
+
