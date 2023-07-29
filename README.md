@@ -50,6 +50,8 @@
 
 5. As a good design pattern, its always recommended to first create a react component, then extract its logic into a custom hook, if needed.
 
+6. Redux provides a way of generating random ids via the function: `nanoid`.
+
 ### Theory of Browser Navigation
 
 1. When a user clicks on an `<a>` (anchor) tag, the browser makes a request to the resource specified by the `href` attribute.
@@ -889,4 +891,6 @@ The general flow to design the store within RTK is:
 4. Create a slice for each group, using the associated mini-reducers from step 2.
 
 > **Derived State**: These are the values that seem to change on the screen, but can be calculated using the existing state. Calculating them within our components instead of storing them in the store makes out code more efficient and less prone to bugs.
+
+Important: Keep in mind that one slice has **absolutely NO visibility** into any other slice. If a slice needs data from another slice, it **must be passed in during dispatch, in `action.payload`**.
 
