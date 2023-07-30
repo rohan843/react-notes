@@ -34,6 +34,7 @@
       - [Recommended Folder Structures](#recommended-folder-structures)
     - [Redux Store Design](#redux-store-design)
       - [Derived State Usage](#derived-state-usage)
+        - [Memoization](#memoization)
 
 <!-- TODO: Add notes from section 1 to section 12 -->
 
@@ -901,4 +902,31 @@ Important: Keep in mind that one slice has **absolutely NO visibility** into any
 
 Often, we need to derive some information from out state (called derived state). This information is best computed within `useSelector` itself.
 
+This typically looks like:
 
+```js
+const derivedState = useSelector((state) => {
+  return someFilteringOperation(state);
+});
+```
+
+Here, there exists a catch. If a re-render occurs, but the part of the state we were interested in stayed the same, a whole new filtering operation would occur. This is repetitive work that can be a source of optimization. We use **memoization** in such a case.
+
+##### Memoization
+
+The basic idea is that if the part of the state we are interested in stayed the same (by comparing references via `===`), we can use a previously cached result. This saves CPU time.
+
+The info at this link is helpful: [https://redux.js.org/usage/deriving-data-selectors#optimizing-selectors-with-memoization](https://redux.js.org/usage/deriving-data-selectors#optimizing-selectors-with-memoization).
+
+The basic structure is:
+
+```js
+const selectA = (state) => state.a;
+const selectB = (state) => state.b;
+const doCachedFiltering = createSelector([selectA, selectB], (a, b) => {
+  return filterAUsingB(a, b);
+});
+const derivedState = useSelector((state) => {
+  return doCachedFiltering(state);
+});
+```
