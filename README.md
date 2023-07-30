@@ -921,6 +921,8 @@ The info at this link is helpful: [https://redux.js.org/usage/deriving-data-sele
 The basic structure is:
 
 ```js
+import { createSelector } from "@reduxjs/toolkit";
+
 const selectA = (state) => state.a;
 const selectB = (state) => state.b;
 const doCachedFiltering = createSelector([selectA, selectB], (a, b) => {
