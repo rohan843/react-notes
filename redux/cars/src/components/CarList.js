@@ -6,16 +6,18 @@ function CarList() {
   const dispatch = useDispatch();
   const selectData = (state) => state.cars.data;
   const selectSearchTerm = (state) => state.cars.searchTerm;
-  const memoizedFiltering = createSelector(
-    [selectData, selectSearchTerm],
-    (data, searchTerm) => {
-      return data.filter((car) =>
+  const selectForm = (state) => state.form;
+  const memoizedSelection = createSelector(
+    [selectData, selectSearchTerm, selectForm],
+    (data, searchTerm, form) => {
+      const filteredCars = data.filter((car) =>
         car.name.toLowerCase().includes(searchTerm.toLowerCase())
       );
+      return { cars: filteredCars, name: form.name };
     }
   );
-  const cars = useSelector((state) => {
-    return memoizedFiltering(state);
+  const { cars, name } = useSelector((state) => {
+    return memoizedSelection(state);
   });
 
   const handleCarDelete = (car) => {
@@ -23,8 +25,9 @@ function CarList() {
   };
 
   const renderedCars = cars.map((car) => {
+    const bold = name && car.name.toLowerCase().includes(name.toLowerCase());
     return (
-      <div key={car.id} className="panel">
+      <div key={car.id} className={`panel ${bold && "bold"}`}>
         <p>
           {car.name} - ${car.cost}
         </p>
