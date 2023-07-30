@@ -33,6 +33,7 @@
       - [Updating multiple slices as a Single Task](#updating-multiple-slices-as-a-single-task)
       - [Recommended Folder Structures](#recommended-folder-structures)
     - [Redux Store Design](#redux-store-design)
+      - [Derived State Usage](#derived-state-usage)
 
 <!-- TODO: Add notes from section 1 to section 12 -->
 
@@ -895,4 +896,9 @@ The general flow to design the store within RTK is:
 > **Derived State**: These are the values that seem to change on the screen, but can be calculated using the existing state. Calculating them within our components instead of storing them in the store makes out code more efficient and less prone to bugs.
 
 Important: Keep in mind that one slice has **absolutely NO visibility** into any other slice. If a slice needs data from another slice, it **must be passed in during dispatch, in `action.payload`**.
+
+#### Derived State Usage
+
+Often, we need to derive some information from out state (called derived state). This information is best computed within `useSelector` itself.
+
 
