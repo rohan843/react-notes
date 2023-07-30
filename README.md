@@ -52,6 +52,8 @@
 
 6. Redux provides a way of generating random ids via the function: `nanoid`.
 
+7. As a rule of thumb, if an event handler has >= 2 uses of `dispatch` within Redux, it usually means that a better store design or `extraReducers` is needed.
+
 ### Theory of Browser Navigation
 
 1. When a user clicks on an `<a>` (anchor) tag, the browser makes a request to the resource specified by the `href` attribute.
